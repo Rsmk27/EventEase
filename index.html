@@ -1,1072 +1,1049 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventEase - Your Countdown Companion</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Identity Services -->
-    <script src="https://accounts.google.com/gsi/client" async></script>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        /* New Light Mode Colors - Fresh & Inviting (Blue/Cyan) */
-        .light {
-            --bg-color: #e0f2f7; /* Very light cyan */
-            --card-bg: #ffffff; /* Pure white */
-            --text-color: #263238; /* Dark blue-gray */
-            --accent-color: #00bcd4; /* Deep Sky Blue (Cyan 500) */
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --border-color: #cfd8dc; /* Light blue-gray */
-        }
-        /* New Dark Mode Colors - Deep & Rich (Blue/Cyan) */
-        .dark {
-            --bg-color: #263238; /* Dark blue-gray */
-            --card-bg: #37474f; /* Slightly lighter dark blue-gray */
-            --text-color: #eceff1; /* Light blue-gray */
-            --accent-color: #4dd0e1; /* Lighter Cyan (Cyan 300) */
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            --border-color: #546e7a; /* Medium dark blue-gray */
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventEase - Your Countdown Companion</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://accounts.google.com/gsi/client" async></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* New Light Mode Colors - Fresh & Inviting (Blue/Cyan) */
+        .light {
+            --bg-color: #e0f2f7; /* Very light cyan */
+            --card-bg: #ffffff; /* Pure white */
+            --text-color: #263238; /* Dark blue-gray */
+            --accent-color: #00bcd4; /* Deep Sky Blue (Cyan 500) */
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --border-color: #cfd8dc; /* Light blue-gray */
+        }
+        /* New Dark Mode Colors - Deep & Rich (Blue/Cyan) */
+        .dark {
+            --bg-color: #263238; /* Dark blue-gray */
+            --card-bg: #37474f; /* Slightly lighter dark blue-gray */
+            --text-color: #eceff1; /* Light blue-gray */
+            --accent-color: #4dd0e1; /* Lighter Cyan (Cyan 300) */
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --border-color: #546e7a; /* Medium dark blue-gray */
+        }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-        .card {
-            background-color: var(--card-bg);
-            box-shadow: 0 4px 12px var(--shadow-color);
-            border: 1px solid var(--border-color);
-        }
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: var(--card-bg); /* Use card-bg for text on primary buttons */
-        }
-        .btn-secondary {
-            background-color: var(--border-color);
-            color: var(--text-color);
-        }
-        .modal-content {
-            background-color: var(--card-bg);
-            box-shadow: 0 10px 25px var(--shadow-color);
-        }
-        input, select, textarea {
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-color);
-            outline: none;
-        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .card {
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--card-bg); /* Use card-bg for text on primary buttons */
+        }
+        .btn-secondary {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+        input, select, textarea {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
 
-        /* Progress Bar Styling */
-        .progress-bar-container {
-            background-color: var(--border-color);
-        }
-        .progress-bar-fill {
-            background-color: var(--accent-color);
-            transition: width 0.5s ease-out;
-        }
+        /* Progress Bar Styling */
+        .progress-bar-container {
+            background-color: var(--border-color);
+        }
+        .progress-bar-fill {
+            background-color: var(--accent-color);
+            transition: width 0.5s ease-out;
+        }
 
-        /* Confetti Animation */
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 9999;
-        }
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #f00; /* Default color, overridden by JS */
-            border-radius: 50%;
-            opacity: 0;
-            animation: confetti-fall 3s forwards;
-        }
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 9999;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00; /* Default color, overridden by JS */
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti-fall 3s forwards;
+        }
 
-        @keyframes confetti-fall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
 
-        /* Animation for countdown numbers change */
-        @keyframes pulse-once {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pulse-once {
-            animation: pulse-once 0.3s ease-in-out;
-        }
+        /* Animation for countdown numbers change */
+        @keyframes pulse-once {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pulse-once {
+            animation: pulse-once 0.3s ease-in-out;
+        }
 
-        /* Header Gradient Animation */
-        .animated-header-gradient {
-            background-size: 200% 200%;
-            animation: gradient-shift 10s ease infinite;
-        }
+        /* Header Gradient Animation */
+        .animated-header-gradient {
+            background-size: 200% 200%;
+            animation: gradient-shift 10s ease infinite;
+        }
 
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        /* New Animations */
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .animate-fade-in-up {
-            animation: fade-in-up 0.5s ease-out forwards;
-        }
+        /* New Animations */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out forwards;
+        }
 
-        @keyframes subtle-pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        .animate-subtle-pulse {
-            animation: subtle-pulse 2.5s infinite ease-in-out;
-        }
-    </style>
+        @keyframes subtle-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        .animate-subtle-pulse {
+            animation: subtle-pulse 2.5s infinite ease-in-out;
+        }
+    </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-4 shadow-lg animated-header-gradient">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">EventEase 🗓️</h1>
-            <div class="flex items-center space-x-4">
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
-                    <i class="fas fa-sun text-xl dark:hidden"></i>
-                    <i class="fas fa-moon text-xl hidden dark:inline-block"></i>
-                </button>
-                <button id="settings-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
-                    <i class="fas fa-cog text-xl"></i>
-                </button>
-                <!-- Google Sign-In Button -->
-                <div id="google-signin-btn" class="ml-4"></div>
-                <!-- User Profile Display -->
-                <div id="user-profile" class="hidden items-center space-x-3 ml-4">
-                    <img id="user-avatar" class="w-8 h-8 rounded-full" alt="User Avatar">
-                    <button id="signout-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
-                        <i class="fas fa-sign-out-alt text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="flex-grow container mx-auto p-4 md:p-8">
-        <!-- Home Section -->
-        <section id="home-section" class="text-center py-16 px-4">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
-                Never Miss a Moment. <br>Your Life, Counted Down.
-            </h2>
-            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-80">
-                EventEase helps you create, track, and celebrate every important milestone. From birthdays to big projects, keep every moment in sight.
-            </p>
-            <button id="create-first-countdown-btn" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:scale-105 transition-transform duration-300 animate-subtle-pulse">
-                Create Your First Countdown <i class="fas fa-plus ml-2"></i>
-            </button>
-        </section>
-
-        <!-- My Countdowns Section -->
-        <section id="my-countdowns-section" class="hidden py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold mb-4 md:mb-0">My Countdowns</h2>
-                <div class="flex items-center space-x-2">
-                    <label for="sort-by" class="text-sm">Sort by:</label>
-                    <select id="sort-by" class="p-2 rounded-md border text-sm">
-                        <option value="date-asc">Date (Soonest First)</option>
-                        <option value="date-desc">Date (Latest First)</option>
-                        <option value="title-asc">Title (A-Z)</option>
-                        <option value="title-desc">Title (Z-A)</option>
-                    </select>
-                </div>
-            </div>
-            <div id="countdown-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Countdown cards will be injected here by JavaScript -->
-            </div>
-            <p id="no-events-message" class="text-center text-lg mt-10 hidden opacity-70">
-                No countdowns yet! Click the '+' button to add your first event.
-            </p>
-        </section>
-    </main>
-
-    <!-- Floating Action Button (FAB) -->
-    <button id="add-event-fab" class="fixed bottom-6 right-6 bg-cyan-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-xl hover:bg-cyan-700 transition-colors duration-300 z-40">
-        <i class="fas fa-plus"></i>
-    </button>
-
-    <!-- Modals -->
-
-    <!-- Add/Edit Event Modal -->
-    <div id="add-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
-            <h3 id="modal-title" class="text-2xl font-bold mb-6 text-center">Add New Event</h3>
-            <form id="event-form" class="space-y-4">
-                <div>
-                    <label for="event-title" class="block text-sm font-medium mb-1">Event Title</label>
-                    <input type="text" id="event-title" placeholder="e.g., My Birthday, Exam Day" required
-                           class="w-full p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
-                </div>
-                <div>
-                    <label for="event-date" class="block text-sm font-medium mb-1">Date & Time</label>
-                    <input type="datetime-local" id="event-date" required
-                           class="w-full p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
-                </div>
-                <div>
-                    <label for="event-icon" class="block text-sm font-medium mb-1">Icon/Emoji (Optional)</label>
-                    <div class="flex items-center space-x-2">
-                        <input type="text" id="event-icon" placeholder="e.g., 🎂, 🎓, ✈️" maxlength="2"
-                               class="flex-grow p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
-                        <button type="button" id="open-emoji-picker" class="p-3 rounded-lg btn-secondary">
-                            <i class="far fa-smile"></i> Pick
-                        </button>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="event-recurring" class="mr-2 h-4 w-4 text-accent-color rounded focus:ring-accent-color">
-                    <label for="event-recurring" class="text-sm font-medium">Repeat Annually (Birthday/Anniversary)</label>
-                </div>
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" id="cancel-add-edit" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Cancel</button>
-                    <button type="submit" class="btn-primary px-5 py-2 rounded-lg font-medium shadow-md hover:opacity-90 transition-opacity">Save Event</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
-            <h3 class="text-2xl font-bold mb-6 text-center">Settings</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center py-2 border-b border-border-color">
-                    <span class="font-medium">Dark Mode</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="settings-theme-toggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-color dark:peer-focus:ring-accent-color rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-cyan-600"></div>
-                    </label>
-                </div>
-                <div class="py-2 border-b border-border-color">
-                    <span class="font-medium block mb-2">Data Management</span>
-                    <div class="flex flex-col space-y-3">
-                        <button id="export-data-btn" class="btn-secondary w-full px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">
-                            Export Countdowns <i class="fas fa-download ml-2"></i>
-                        </button>
-                        <label for="import-file-input" class="btn-secondary w-full px-4 py-2 rounded-lg font-medium cursor-pointer text-center hover:opacity-80 transition-opacity">
-                            Import Countdowns <i class="fas fa-upload ml-2"></i>
-                            <input type="file" id="import-file-input" accept=".json" class="hidden">
-                        </label>
-                        <button id="clear-all-data-btn" class="bg-red-500 text-white w-full px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-colors">
-                            Clear All Countdowns <i class="fas fa-trash-alt ml-2"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="flex justify-end mt-6">
-                <button type="button" id="close-settings" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Emoji Picker Modal -->
-    <div id="emoji-picker-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
-            <h3 class="text-2xl font-bold mb-4 text-center">Pick an Emoji</h3>
-            <div id="emoji-grid" class="grid grid-cols-6 gap-2 text-3xl text-center max-h-64 overflow-y-auto p-2 rounded-lg border border-border-color">
-                <!-- Emojis will be injected here -->
-            </div>
-            <div class="flex justify-end mt-6">
-                <button type="button" id="close-emoji-picker-modal" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Message Box Modal -->
-    <div id="message-box-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-sm text-center transform transition-all duration-300 -translate-y-10 opacity-0">
-            <p id="message-box-text" class="text-lg mb-6"></p>
-            <div class="flex justify-center space-x-4">
-                <button id="message-box-cancel" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity hidden">Cancel</button>
-                <button id="message-box-ok" class="btn-primary px-5 py-2 rounded-lg font-medium shadow-md hover:opacity-90 transition-opacity">OK</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confetti Container -->
-    <div id="confetti-container" class="confetti-container hidden"></div>
-
-    <script>
-        // Global variables for events and current edit state
-        let events = [];
-        let currentEditingEventId = null;
-        let countdownInterval;
-
-        // DOM Element References
-        const htmlElement = document.documentElement;
-        const homeSection = document.getElementById('home-section');
-        const myCountdownsSection = document.getElementById('my-countdowns-section');
-        const countdownGrid = document.getElementById('countdown-grid');
-        const noEventsMessage = document.getElementById('no-events-message');
-
-        // Modals
-        const addEditModal = document.getElementById('add-edit-modal');
-        const settingsModal = document.getElementById('settings-modal');
-        const emojiPickerModal = document.getElementById('emoji-picker-modal');
-        const messageBoxModal = document.getElementById('message-box-modal');
-
-        // Form Elements
-        const eventForm = document.getElementById('event-form');
-        const eventTitleInput = document.getElementById('event-title');
-        const eventDateInput = document.getElementById('event-date');
-        const eventIconInput = document.getElementById('event-icon');
-        const eventRecurringCheckbox = document.getElementById('event-recurring');
-        const modalTitle = document.getElementById('modal-title');
-
-        // Buttons
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const settingsBtn = document.getElementById('settings-btn');
-        const createFirstCountdownBtn = document.getElementById('create-first-countdown-btn');
-        const addEventFab = document.getElementById('add-event-fab');
-        const cancelAddEditBtn = document.getElementById('cancel-add-edit');
-        const closeSettingsBtn = document.getElementById('close-settings');
-        const openEmojiPickerBtn = document.getElementById('open-emoji-picker');
-        const closeEmojiPickerModalBtn = document.getElementById('close-emoji-picker-modal');
-        const exportDataBtn = document.getElementById('export-data-btn');
-        const importFileInput = document.getElementById('import-file-input');
-        const clearAllDataBtn = document.getElementById('clear-all-data-btn');
-        const settingsThemeToggle = document.getElementById('settings-theme-toggle');
-        const sortBySelect = document.getElementById('sort-by');
-        const googleSignInBtn = document.getElementById('google-signin-btn');
-        const userProfileDiv = document.getElementById('user-profile');
-        const userAvatarImg = document.getElementById('user-avatar');
-        const signOutBtn = document.getElementById('signout-btn');
-
-        // Emoji Grid
-        const emojiGrid = document.getElementById('emoji-grid');
-        const commonEmojis = ['🎉', '🎂', '🎓', '✈️', '🏖️', '🎄', '🎃', '🎁', '💍', '❤️', '💼', '💪', '🗓️', '🥳', '✨', '📚', '🎵', '🎮', '🏡', '🚗'];
-
-        // Confetti
-        const confettiContainer = document.getElementById('confetti-container');
-
-        /**
-         * Initializes the application.
-         * Loads events, sets up theme, renders countdowns, and attaches event listeners.
-         */
-        function initApp() {
-            loadEvents();
-            setInitialTheme();
-            initializeGoogleSignIn();
-            renderCountdowns();
-            startCountdownUpdater();
-            attachEventListeners();
-            showInitialSection();
-        }
-
-        /**
-         * Shows either the home section or the countdowns section based on existing events.
-         */
-        function showInitialSection() {
-            if (events.length === 0) {
-                homeSection.classList.remove('hidden');
-                myCountdownsSection.classList.add('hidden');
-            } else {
-                homeSection.classList.add('hidden');
-                myCountdownsSection.classList.remove('hidden');
-            }
-        }
-
-        /**
-         * Loads events from localStorage.
-         */
-        function loadEvents() {
-            try {
-                const storedEvents = localStorage.getItem('eventEaseEvents');
-                events = storedEvents ? JSON.parse(storedEvents) : [];
-                // Ensure targetDate is a valid ISO string and handle recurring events
-                events = events.map(event => {
-                    if (event.isRecurring) {
-                        let targetDate = new Date(event.targetDate);
-                        let now = new Date();
-                        // If recurring event date has passed this year, set for next year
-                        // Only update if the targetDate is actually in the past
-                        if (targetDate.getTime() <= now.getTime()) {
-                            targetDate.setFullYear(now.getFullYear() + 1);
-                        }
-                        event.targetDate = targetDate.toISOString().slice(0, 16); // Store as YYYY-MM-DDTHH:MM
-                    }
-                    return event;
-                });
-                sortEvents(); // Sort after loading and adjusting recurring dates
-            } catch (e) {
-                console.error("Failed to load events from localStorage:", e);
-                events = [];
-            }
-        }
-
-        /**
-         * Saves events to localStorage.
-         */
-        function saveEvents() {
-            localStorage.setItem('eventEaseEvents', JSON.stringify(events));
-        }
-
-        /**
-         * Sorts the events array based on the selected sort option.
-         */
-        function sortEvents() {
-            const sortBy = sortBySelect.value;
-            switch (sortBy) {
-                case 'date-asc':
-                    events.sort((a, b) => new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime());
-                    break;
-                case 'date-desc':
-                    events.sort((a, b) => new Date(b.targetDate).getTime() - new Date(a.targetDate).getTime());
-                    break;
-                case 'title-asc':
-                    events.sort((a, b) => a.title.localeCompare(b.title));
-                    break;
-                case 'title-desc':
-                    events.sort((a, b) => b.title.localeCompare(a.title));
-                    break;
-            }
-            saveEvents(); // Save sorted order
-            renderCountdowns(); // Re-render to reflect sort
-        }
-
-        /**
-         * Renders all countdown cards.
-         */
-        function renderCountdowns() {
-            countdownGrid.innerHTML = ''; // Clear existing cards
-            if (events.length === 0) {
-                noEventsMessage.classList.remove('hidden');
-                homeSection.classList.remove('hidden');
-                myCountdownsSection.classList.add('hidden');
-                return;
-            } else {
-                noEventsMessage.classList.add('hidden');
-                homeSection.classList.add('hidden');
-                myCountdownsSection.classList.remove('hidden');
-            }
-
-            events.forEach((event, index) => {
-                const card = createCountdownCard(event);
-                // Add staggered animation
-                card.style.animationDelay = `${index * 100}ms`;
-                card.classList.add('animate-fade-in-up');
-                countdownGrid.appendChild(card);
-            });
-        }
-
-        /**
-         * Creates a single countdown card element.
-         * @param {object} event - The event object.
-         * @returns {HTMLElement} The created card element.
-         */
-        function createCountdownCard(event) {
-            const card = document.createElement('div');
-            // Added min-w-[300px] to ensure cards have enough space
-            card.id = `event-card-${event.id}`;
-            card.className = 'card rounded-xl p-6 flex flex-col justify-between transform hover:scale-102 transition-transform duration-200 min-w-[300px]';
-
-            const targetDate = new Date(event.targetDate);
-            const now = new Date();
-            const isExpired = targetDate.getTime() <= now.getTime();
-
-            // Check for confetti trigger for recurring events
-            if (event.isRecurring && !isExpired) {
-                const today = new Date();
-                // Only trigger if the month and day match, and it hasn't passed for today
-                if (targetDate.getMonth() === today.getMonth() && targetDate.getDate() === today.getDate() && targetDate.getTime() > now.getTime()) {
-                    triggerConfetti();
-                }
-            }
-
-            card.innerHTML = `
-                <div class="flex items-center mb-4">
-                    <span class="text-4xl mr-3">${event.icon || '🗓️'}</span>
-                    <h3 class="text-xl font-semibold flex-grow ${isExpired ? 'line-through opacity-70' : ''}">${event.title}</h3>
-                </div>
-                <div class="countdown-display text-center my-4 ${isExpired ? 'opacity-50' : ''}">
-                    <!-- Adjusted space-x and added flex-shrink-0 to time-unit -->
-                    <div class="flex justify-center items-baseline space-x-3 md:space-x-6">
-                        <div class="time-unit flex-shrink-0">
-                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="days"></p>
-                            <p class="text-xs uppercase tracking-wider opacity-80">Days</p>
-                        </div>
-                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
-                        <div class="time-unit flex-shrink-0">
-                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="hours"></p>
-                            <p class="text-xs uppercase tracking-wider opacity-80">Hours</p>
-                        </div>
-                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
-                        <div class="time-unit flex-shrink-0">
-                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="minutes"></p>
-                            <p class="text-xs uppercase tracking-wider opacity-80">Minutes</p>
-                        </div>
-                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
-                        <div class="time-unit flex-shrink-0">
-                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="seconds"></p>
-                            <p class="text-xs uppercase tracking-wider opacity-80">Seconds</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="progress-bar-container w-full h-2 rounded-full overflow-hidden mb-4 ${isExpired ? 'opacity-50' : ''}">
-                    <div class="progress-bar-fill h-full rounded-full" style="width: 0%;"></div>
-                </div>
-                <div class="flex justify-end space-x-2 mt-auto">
-                    ${isExpired ? `
-                        <button class="btn-secondary px-3 py-1 rounded-md text-sm delete-btn" data-id="${event.id}">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    ` : `
-                        <button class="btn-secondary px-3 py-1 rounded-md text-sm edit-btn" data-id="${event.id}">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn-secondary px-3 py-1 rounded-md text-sm delete-btn" data-id="${event.id}">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    `}
-                </div>
-            `;
-
-            // Update countdown display immediately
-            updateCountdownDisplay(card, event.targetDate);
-
-            // Add event listeners for edit and delete buttons
-            card.querySelector('.edit-btn')?.addEventListener('click', () => openAddEditModal(event));
-            card.querySelector('.delete-btn')?.addEventListener('click', () => {
-                showMessageBox('Are you sure you want to delete this event?', 'confirm', () => deleteEvent(event.id));
-            });
-
-            return card;
-        }
-
-        /**
-         * Updates the countdown display for a single card.
-         * @param {HTMLElement} cardElement - The card element to update.
-         * @param {string} targetDateStr - The target date string (ISO format).
-         */
-        function updateCountdownDisplay(cardElement, targetDateStr) {
-            const targetDate = new Date(targetDateStr);
-            const now = new Date();
-            let diff = targetDate.getTime() - now.getTime();
-
-            const daysEl = cardElement.querySelector('[data-unit="days"]');
-            const hoursEl = cardElement.querySelector('[data-unit="hours"]');
-            const minutesEl = cardElement.querySelector('[data-unit="minutes"]');
-            const secondsEl = cardElement.querySelector('[data-unit="seconds"]');
-            const progressBarFill = cardElement.querySelector('.progress-bar-fill');
-
-            // Function to pad single digits with a leading zero
-            const pad = (num) => num < 10 ? '0' + num : num;
-
-            // Add a subtle animation class when numbers change
-            const animateChange = (element, newValue) => {
-                if (element && element.textContent !== newValue) {
-                    element.classList.add('animate-pulse-once');
-                    element.textContent = newValue;
-                    element.addEventListener('animationend', () => {
-                        element.classList.remove('animate-pulse-once');
-                    }, { once: true });
-                }
-            };
-
-            if (diff <= 0) {
-                // Event has passed
-                if (daysEl) daysEl.textContent = '00';
-                if (hoursEl) hoursEl.textContent = '00';
-                if (minutesEl) minutesEl.textContent = '00';
-                if (secondsEl) secondsEl.textContent = '00';
-
-                // Display "Event Passed!" in the main time left element if it exists (for simpler cards)
-                const timeLeftDisplay = cardElement.querySelector('[data-time-left]');
-                if (timeLeftDisplay) timeLeftDisplay.textContent = "Event Passed!";
-                const timeLabelsDisplay = cardElement.querySelector('[data-time-labels]');
-                if (timeLabelsDisplay) timeLabelsDisplay.textContent = "";
-
-                if (progressBarFill) progressBarFill.style.width = '100%';
-                cardElement.classList.add('opacity-70', 'grayscale'); // Visually dim expired events
-                cardElement.querySelectorAll('.edit-btn').forEach(btn => btn.classList.add('hidden')); // Hide edit button
-                return;
-            } else {
-                cardElement.classList.remove('opacity-70', 'grayscale');
-                cardElement.querySelectorAll('.edit-btn').forEach(btn => btn.classList.remove('hidden'));
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            diff -= days * (1000 * 60 * 60 * 24);
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            diff -= hours * (1000 * 60 * 60);
-            const minutes = Math.floor(diff / (1000 * 60));
-            diff -= minutes * (1000 * 60);
-            const seconds = Math.floor(diff / 1000);
-
-            animateChange(daysEl, pad(days));
-            animateChange(hoursEl, pad(hours));
-            animateChange(minutesEl, pad(minutes));
-            animateChange(secondsEl, pad(seconds));
-
-            // Update progress bar
-            // To calculate progress accurately, we need the event's creation time.
-            // For simplicity, let's assume events are created *now* for progress calculation
-            // or store a 'creationTime' property with each event.
-            // For now, let's just show progress based on the current year for recurring, or total time for one-off.
-            // This needs a more robust 'creationTime' property on the event object for true accuracy.
-            // For demonstration, we'll use a simplified progress that fills over the remaining time.
-            const totalRemaining = targetDate.getTime() - now.getTime();
-            const initialRemaining = events.find(e => e.id === cardElement.id.replace('event-card-', ''))?.initialRemaining || totalRemaining; // Placeholder
-            let progress = ((initialRemaining - totalRemaining) / initialRemaining) * 100;
-
-            if (progress < 0 || isNaN(progress)) progress = 0;
-            if (progress > 100) progress = 100;
-            if (progressBarFill) progressBarFill.style.width = `${progress}%`;
-        }
-
-        /**
-         * Starts the interval to update all countdowns every second.
-         */
-        function startCountdownUpdater() {
-            if (countdownInterval) clearInterval(countdownInterval); // Clear any existing interval
-            countdownInterval = setInterval(() => {
-                document.querySelectorAll('.card').forEach(cardElement => {
-                    const eventId = cardElement.id.replace('event-card-', '');
-                    const event = events.find(e => e.id === eventId);
-                    if (event) {
-                        updateCountdownDisplay(cardElement, event.targetDate);
-                    }
-                });
-            }, 1000);
-        }
-
-        /**
-         * Opens the add/edit event modal.
-         * @param {object} [event=null] - The event object to pre-fill the form for editing.
-         */
-        function openAddEditModal(event = null) {
-            openModal(addEditModal); // Use helper function for consistent modal opening
-
-            if (event) {
-                modalTitle.textContent = 'Edit Event';
-                eventTitleInput.value = event.title;
-                // Format date for datetime-local input (YYYY-MM-DDTHH:MM)
-                eventDateInput.value = event.targetDate.slice(0, 16);
-                eventIconInput.value = event.icon || '';
-                eventRecurringCheckbox.checked = event.isRecurring || false;
-                currentEditingEventId = event.id;
-            } else {
-                modalTitle.textContent = 'Add New Event';
-                eventForm.reset(); // Clear form for new event
-                // Default to tomorrow's date and time for new events
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(tomorrow.getHours() + 1); // Default to one hour from now
-                eventDateInput.value = tomorrow.toISOString().slice(0, 16);
-                currentEditingEventId = null;
-            }
-        }
-
-        /**
-         * Closes a given modal.
-         * @param {HTMLElement} modalElement - The modal element to close.
-         */
-        function closeModal(modalElement) {
-            const modalContent = modalElement.querySelector('.modal-content');
-            modalContent.classList.remove('translate-y-0', 'opacity-100');
-            modalContent.classList.add('-translate-y-10', 'opacity-0');
-            setTimeout(() => {
-                modalElement.classList.add('hidden');
-            }, 300); // Match transition duration
-        }
-
-        /**
-         * Handles the submission of the event form (add or edit).
-         * @param {Event} e - The form submission event.
-         */
-        function handleEventFormSubmit(e) {
-            e.preventDefault();
-
-            const title = eventTitleInput.value.trim();
-            const date = eventDateInput.value;
-            const icon = eventIconInput.value.trim();
-            const isRecurring = eventRecurringCheckbox.checked;
-
-            if (!title || !date) {
-                showMessageBox('Please fill in all required fields.', 'alert');
-                return;
-            }
-
-            const newEventData = {
-                id: currentEditingEventId || Date.now().toString(), // Use existing ID or generate new
-                title: title,
-                targetDate: date,
-                icon: icon,
-                isRecurring: isRecurring,
-                // Store initial remaining time for progress bar calculation
-                initialRemaining: currentEditingEventId ? events.find(e => e.id === currentEditingEventId)?.initialRemaining : (new Date(date).getTime() - new Date().getTime())
-            };
-
-            if (currentEditingEventId) {
-                // Editing existing event
-                const index = events.findIndex(e => e.id === currentEditingEventId);
-                if (index !== -1) {
-                    events[index] = newEventData;
-                }
-            } else {
-                // Adding new event
-                events.push(newEventData);
-            }
-
-            saveEvents();
-            sortEvents(); // Re-sort after adding/editing
-            closeModal(addEditModal);
-            showMessageBox('Event saved successfully!', 'alert');
-        }
-
-        /**
-         * Deletes an event by its ID.
-         * @param {string} id - The ID of the event to delete.
-         */
-        function deleteEvent(id) {
-            events = events.filter(event => event.id !== id);
-            saveEvents();
-            renderCountdowns();
-            showMessageBox('Event deleted successfully!', 'alert');
-        }
-
-        /**
-         * Sets the initial theme based on localStorage or system preference.
-         */
-        function setInitialTheme() {
-            const savedTheme = localStorage.getItem('eventEaseTheme');
-            if (savedTheme) {
-                htmlElement.className = savedTheme;
-            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                htmlElement.className = 'dark';
-            } else {
-                htmlElement.className = 'light';
-            }
-            settingsThemeToggle.checked = htmlElement.classList.contains('dark');
-        }
-
-        /**
-         * Toggles between light and dark mode.
-         */
-        function toggleTheme() {
-            if (htmlElement.classList.contains('light')) {
-                htmlElement.classList.remove('light');
-                htmlElement.classList.add('dark');
-                localStorage.setItem('eventEaseTheme', 'dark');
-            } else {
-                htmlElement.classList.remove('dark');
-                htmlElement.classList.add('light');
-                localStorage.setItem('eventEaseTheme', 'light');
-            }
-            settingsThemeToggle.checked = htmlElement.classList.contains('dark');
-        }
-
-        /**
-         * Populates and displays the emoji picker modal.
-         */
-        function showEmojiPicker() {
-            emojiGrid.innerHTML = '';
-            commonEmojis.forEach(emoji => {
-                const span = document.createElement('span');
-                span.textContent = emoji;
-                span.className = 'cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors';
-                span.addEventListener('click', () => {
-                    eventIconInput.value = emoji;
-                    closeModal(emojiPickerModal);
-                });
-                emojiGrid.appendChild(span);
-            });
-            openModal(emojiPickerModal); // Use helper function for consistent modal opening
-        }
-
-        /**
-         * Clears all countdown data from localStorage.
-         */
-        function clearAllData() {
-            showMessageBox('Are you sure you want to clear ALL countdowns? This cannot be undone.', 'confirm', () => {
-                localStorage.removeItem('eventEaseEvents');
-                events = [];
-                renderCountdowns();
-                closeModal(settingsModal);
-                showMessageBox('All countdowns cleared!', 'alert');
-            });
-        }
-
-        /**
-         * Exports countdown data as a JSON file.
-         */
-        function exportData() {
-            const dataStr = JSON.stringify(events, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `eventease_countdowns_${new Date().toISOString().slice(0, 10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showMessageBox('Countdowns exported successfully!', 'alert');
-        }
-
-        /**
-         * Imports countdown data from a JSON file.
-         * @param {Event} e - The file input change event.
-         */
-        function importData(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const importedEvents = JSON.parse(event.target.result);
-                    if (Array.isArray(importedEvents)) {
-                        showMessageBox('Replace existing countdowns with imported data?', 'confirm', () => {
-                            events = importedEvents.map(ev => ({
-                                id: ev.id || Date.now().toString() + Math.random().toString(36).substring(2, 9), // Ensure unique ID
-                                title: ev.title,
-                                targetDate: ev.targetDate,
-                                icon: ev.icon || '',
-                                isRecurring: ev.isRecurring || false,
-                                initialRemaining: ev.initialRemaining || (new Date(ev.targetDate).getTime() - new Date().getTime()) // Preserve or set initialRemaining
-                            }));
-                            saveEvents();
-                            sortEvents();
-                            closeModal(settingsModal);
-                            showMessageBox('Countdowns imported successfully!', 'alert');
-                        });
-                    } else {
-                        showMessageBox('Invalid JSON format. Please select a valid EventEase export file.', 'alert');
-                    }
-                } catch (error) {
-                    showMessageBox('Error parsing JSON file. Please ensure it is a valid JSON.', 'alert');
-                    console.error("Error importing data:", error);
-                } finally {
-                    e.target.value = ''; // Clear the file input
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        /**
-         * Displays a custom message box.
-         * @param {string} message - The message to display.
-         * @param {'alert'|'confirm'} type - Type of message box (alert or confirmation).
-         * @param {function} [onConfirm] - Callback function for 'confirm' type when OK is clicked.
-         */
-        function showMessageBox(message, type = 'alert', onConfirm = null) {
-            const messageBoxText = document.getElementById('message-box-text');
-            const messageBoxOkBtn = document.getElementById('message-box-ok');
-            const messageBoxCancelBtn = document.getElementById('message-box-cancel');
-
-            messageBoxText.textContent = message;
-
-            messageBoxOkBtn.onclick = () => {
-                closeModal(messageBoxModal);
-                if (type === 'confirm' && onConfirm) {
-                    onConfirm();
-                }
-            };
-
-            if (type === 'confirm') {
-                messageBoxCancelBtn.classList.remove('hidden');
-                messageBoxCancelBtn.onclick = () => closeModal(messageBoxModal);
-            } else {
-                messageBoxCancelBtn.classList.add('hidden');
-            }
-
-            openModal(messageBoxModal); // Use helper function for consistent modal opening
-        }
-
-        /**
-         * Triggers a simple confetti animation.
-         */
-        function triggerConfetti() {
-            confettiContainer.classList.remove('hidden');
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
-            for (let i = 0; i < 50; i++) { // Generate 50 confetti pieces
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = `${Math.random() * 100}vw`;
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
-                confetti.style.animationDuration = `${2 + Math.random() * 2}s`; // 2 to 4 seconds
-                confetti.style.transform = `translateY(${Math.random() * -100}px) rotate(${Math.random() * 360}deg)`; // Start slightly above
-                confettiContainer.appendChild(confetti);
-
-                // Remove confetti after animation to prevent DOM bloat
-                confetti.addEventListener('animationend', () => confetti.remove());
-            }
-            // Hide container after a short while if no new confetti is generated
-            setTimeout(() => {
-                if (confettiContainer.children.length === 0) {
-                    confettiContainer.classList.add('hidden');
-                }
-            }, 4000);
-        }
-
-        /**
-         * Initializes Google Sign-In button.
-         */
-        function initializeGoogleSignIn() {
-            // IMPORTANT: Replace with your actual Google Client ID
-            const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
-
-            if (GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
-                console.warn("Google Client ID is not set. Please replace 'YOUR_GOOGLE_CLIENT_ID' in the script.");
-                const signInBtnContainer = document.getElementById('google-signin-btn');
-                if(signInBtnContainer) {
-                    signInBtnContainer.innerHTML = '<p class="text-xs text-red-500">Google Client ID not configured.</p>';
-                }
-                return;
-            }
-
-            google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
-                callback: handleCredentialResponse
-            });
-
-            google.accounts.id.renderButton(
-                googleSignInBtn,
-                { theme: "outline", size: "large", type: 'icon', shape: 'circle' } // Customize button
-            );
-            // google.accounts.id.prompt(); // Optional: show One Tap prompt
-        }
-
-        /**
-         * Handles the response from Google Sign-In.
-         * @param {object} response - The credential response object from Google.
-         */
-        function handleCredentialResponse(response) {
-            // Decode the JWT token to get user profile information
-            const credential = response.credential;
-            const payload = JSON.parse(atob(credential.split('.')[1]));
-
-            // Update UI with user info
-            userAvatarImg.src = payload.picture;
-            userAvatarImg.alt = `${payload.name}'s avatar`;
-            userProfileDiv.classList.remove('hidden');
-            userProfileDiv.classList.add('flex');
-            googleSignInBtn.style.display = 'none';
-
-            showMessageBox(`Welcome, ${payload.given_name}!`, 'alert');
-            // Here you could potentially namespace localStorage or fetch data from a backend
-        }
-
-        /**
-         * Handles user sign-out.
-         */
-        function handleSignOut() {
-            // This is a simplified sign-out. For a full sign-out, you might need to
-            // call google.accounts.id.disableAutoSelect() or manage server-side sessions.
-            userProfileDiv.classList.add('hidden');
-            userProfileDiv.classList.remove('flex');
-            googleSignInBtn.style.display = 'block';
-
-            // It's good practice to re-initialize or at least re-render the button
-            // in case the user wants to sign in again.
-            // Note: The google object might not be available if the script failed to load.
-            if (window.google && google.accounts && google.accounts.id) {
-                 google.accounts.id.renderButton(
-                    googleSignInBtn,
-                    { theme: "outline", size: "large", type: 'icon', shape: 'circle' }
-                );
-            }
-
-            showMessageBox('You have been signed out.', 'alert');
-        }
-
-        /**
-         * Attaches all global event listeners.
-         */
-        function attachEventListeners() {
-            // Header buttons
-            themeToggleBtn.addEventListener('click', toggleTheme);
-            settingsBtn.addEventListener('click', () => openModal(settingsModal));
-            signOutBtn.addEventListener('click', handleSignOut);
-
-            // Initial CTA button
-            createFirstCountdownBtn.addEventListener('click', () => openAddEditModal());
-
-            // FAB
-            addEventFab.addEventListener('click', () => openAddEditModal());
-
-            // Add/Edit Modal buttons
-            cancelAddEditBtn.addEventListener('click', () => closeModal(addEditModal));
-            eventForm.addEventListener('submit', handleEventFormSubmit);
-            openEmojiPickerBtn.addEventListener('click', showEmojiPicker);
-
-            // Settings Modal buttons
-            closeSettingsBtn.addEventListener('click', () => closeModal(settingsModal));
-            settingsThemeToggle.addEventListener('change', toggleTheme);
-            exportDataBtn.addEventListener('click', exportData);
-            importFileInput.addEventListener('change', importData);
-            clearAllDataBtn.addEventListener('click', clearAllData);
-            sortBySelect.addEventListener('change', sortEvents);
-
-            // Emoji Picker Modal buttons
-            closeEmojiPickerModalBtn.addEventListener('click', () => closeModal(emojiPickerModal));
-
-            // Close modals when clicking outside (on overlay)
-            addEditModal.addEventListener('click', (e) => { if (e.target === addEditModal) closeModal(addEditModal); });
-            settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeModal(settingsModal); });
-            emojiPickerModal.addEventListener('click', (e) => { if (e.target === emojiPickerModal) closeModal(emojiPickerModal); });
-            messageBoxModal.addEventListener('click', (e) => { if (e.target === messageBoxModal) closeModal(messageBoxModal); });
-        }
-
-        /**
-         * Helper to open any modal with transition.
-         * @param {HTMLElement} modalElement - The modal element to open.
-         */
-        function openModal(modalElement) {
-            modalElement.classList.remove('hidden');
-            const modalContent = modalElement.querySelector('.modal-content');
-            setTimeout(() => {
-                modalContent.classList.remove('-translate-y-10', 'opacity-0');
-                modalContent.classList.add('translate-y-0', 'opacity-100');
-            }, 10);
-        }
-
-        // Initialize the app when the window is fully loaded to ensure Google script is ready
-        window.onload = initApp;
-    </script>
+        <header class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-4 shadow-lg animated-header-gradient">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">EventEase 🗓️</h1>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                    <i class="fas fa-sun text-xl dark:hidden"></i>
+                    <i class="fas fa-moon text-xl hidden dark:inline-block"></i>
+                </button>
+                <button id="settings-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                    <i class="fas fa-cog text-xl"></i>
+                </button>
+                                <div id="google-signin-btn" class="ml-4"></div>
+                                <div id="user-profile" class="hidden items-center space-x-3 ml-4">
+                    <img id="user-avatar" class="w-8 h-8 rounded-full" alt="User Avatar">
+                    <button id="signout-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <i class="fas fa-sign-out-alt text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <main class="flex-grow container mx-auto p-4 md:p-8">
+                <section id="home-section" class="text-center py-16 px-4">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+                Never Miss a Moment. <br>Your Life, Counted Down.
+            </h2>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-80">
+                EventEase helps you create, track, and celebrate every important milestone. From birthdays to big projects, keep every moment in sight.
+            </p>
+            <button id="create-first-countdown-btn" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:scale-105 transition-transform duration-300 animate-subtle-pulse">
+                Create Your First Countdown <i class="fas fa-plus ml-2"></i>
+            </button>
+        </section>
+
+                <section id="my-countdowns-section" class="hidden py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold mb-4 md:mb-0">My Countdowns</h2>
+                <div class="flex items-center space-x-2">
+                    <label for="sort-by" class="text-sm">Sort by:</label>
+                    <select id="sort-by" class="p-2 rounded-md border text-sm">
+                        <option value="date-asc">Date (Soonest First)</option>
+                        <option value="date-desc">Date (Latest First)</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="countdown-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            </div>
+            <p id="no-events-message" class="text-center text-lg mt-10 hidden opacity-70">
+                No countdowns yet! Click the '+' button to add your first event.
+            </p>
+        </section>
+    </main>
+
+        <button id="add-event-fab" class="fixed bottom-6 right-6 bg-cyan-600 text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-xl hover:bg-cyan-700 transition-colors duration-300 z-40">
+        <i class="fas fa-plus"></i>
+    </button>
+
+            <div id="add-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
+            <h3 id="modal-title" class="text-2xl font-bold mb-6 text-center">Add New Event</h3>
+            <form id="event-form" class="space-y-4">
+                <div>
+                    <label for="event-title" class="block text-sm font-medium mb-1">Event Title</label>
+                    <input type="text" id="event-title" placeholder="e.g., My Birthday, Exam Day" required
+                           class="w-full p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
+                </div>
+                <div>
+                    <label for="event-date" class="block text-sm font-medium mb-1">Date & Time</label>
+                    <input type="datetime-local" id="event-date" required
+                           class="w-full p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
+                </div>
+                <div>
+                    <label for="event-icon" class="block text-sm font-medium mb-1">Icon/Emoji (Optional)</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="event-icon" placeholder="e.g., 🎂, 🎓, ✈️" maxlength="2"
+                               class="flex-grow p-3 rounded-lg focus:ring-2 focus:ring-accent-color transition-colors">
+                        <button type="button" id="open-emoji-picker" class="p-3 rounded-lg btn-secondary">
+                            <i class="far fa-smile"></i> Pick
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="event-recurring" class="mr-2 h-4 w-4 text-accent-color rounded focus:ring-accent-color">
+                    <label for="event-recurring" class="text-sm font-medium">Repeat Annually (Birthday/Anniversary)</label>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" id="cancel-add-edit" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Cancel</button>
+                    <button type="submit" class="btn-primary px-5 py-2 rounded-lg font-medium shadow-md hover:opacity-90 transition-opacity">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
+            <h3 class="text-2xl font-bold mb-6 text-center">Settings</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center py-2 border-b border-border-color">
+                    <span class="font-medium">Dark Mode</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="settings-theme-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-accent-color dark:peer-focus:ring-accent-color rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-cyan-600"></div>
+                    </label>
+                </div>
+                <div class="py-2 border-b border-border-color">
+                    <span class="font-medium block mb-2">Data Management</span>
+                    <div class="flex flex-col space-y-3">
+                        <button id="export-data-btn" class="btn-secondary w-full px-4 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">
+                            Export Countdowns <i class="fas fa-download ml-2"></i>
+                        </button>
+                        <label for="import-file-input" class="btn-secondary w-full px-4 py-2 rounded-lg font-medium cursor-pointer text-center hover:opacity-80 transition-opacity">
+                            Import Countdowns <i class="fas fa-upload ml-2"></i>
+                            <input type="file" id="import-file-input" accept=".json" class="hidden">
+                        </label>
+                        <button id="clear-all-data-btn" class="bg-red-500 text-white w-full px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-colors">
+                            Clear All Countdowns <i class="fas fa-trash-alt ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button type="button" id="close-settings" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Close</button>
+            </div>
+        </div>
+    </div>
+
+        <div id="emoji-picker-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
+            <h3 class="text-2xl font-bold mb-4 text-center">Pick an Emoji</h3>
+            <div id="emoji-grid" class="grid grid-cols-6 gap-2 text-3xl text-center max-h-64 overflow-y-auto p-2 rounded-lg border border-border-color">
+                            </div>
+            <div class="flex justify-end mt-6">
+                <button type="button" id="close-emoji-picker-modal" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity">Close</button>
+            </div>
+        </div>
+    </div>
+
+        <div id="message-box-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="modal-content rounded-xl p-6 w-full max-w-sm text-center transform transition-all duration-300 -translate-y-10 opacity-0">
+            <p id="message-box-text" class="text-lg mb-6"></p>
+            <div class="flex justify-center space-x-4">
+                <button id="message-box-cancel" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity hidden">Cancel</button>
+                <button id="message-box-ok" class="btn-primary px-5 py-2 rounded-lg font-medium shadow-md hover:opacity-90 transition-opacity">OK</button>
+            </div>
+        </div>
+    </div>
+
+        <div id="confetti-container" class="confetti-container hidden"></div>
+
+    <script>
+        // Global variables for events and current edit state
+        let events = [];
+        let currentEditingEventId = null;
+        let countdownInterval;
+
+        // DOM Element References
+        const htmlElement = document.documentElement;
+        const homeSection = document.getElementById('home-section');
+        const myCountdownsSection = document.getElementById('my-countdowns-section');
+        const countdownGrid = document.getElementById('countdown-grid');
+        const noEventsMessage = document.getElementById('no-events-message');
+
+        // Modals
+        const addEditModal = document.getElementById('add-edit-modal');
+        const settingsModal = document.getElementById('settings-modal');
+        const emojiPickerModal = document.getElementById('emoji-picker-modal');
+        const messageBoxModal = document.getElementById('message-box-modal');
+
+        // Form Elements
+        const eventForm = document.getElementById('event-form');
+        const eventTitleInput = document.getElementById('event-title');
+        const eventDateInput = document.getElementById('event-date');
+        const eventIconInput = document.getElementById('event-icon');
+        const eventRecurringCheckbox = document.getElementById('event-recurring');
+        const modalTitle = document.getElementById('modal-title');
+
+        // Buttons
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const settingsBtn = document.getElementById('settings-btn');
+        const createFirstCountdownBtn = document.getElementById('create-first-countdown-btn');
+        const addEventFab = document.getElementById('add-event-fab');
+        const cancelAddEditBtn = document.getElementById('cancel-add-edit');
+        const closeSettingsBtn = document.getElementById('close-settings');
+        const openEmojiPickerBtn = document.getElementById('open-emoji-picker');
+        const closeEmojiPickerModalBtn = document.getElementById('close-emoji-picker-modal');
+        const exportDataBtn = document.getElementById('export-data-btn');
+        const importFileInput = document.getElementById('import-file-input');
+        const clearAllDataBtn = document.getElementById('clear-all-data-btn');
+        const settingsThemeToggle = document.getElementById('settings-theme-toggle');
+        const sortBySelect = document.getElementById('sort-by');
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const userProfileDiv = document.getElementById('user-profile');
+        const userAvatarImg = document.getElementById('user-avatar');
+        const signOutBtn = document.getElementById('signout-btn');
+
+        // Emoji Grid
+        const emojiGrid = document.getElementById('emoji-grid');
+        const commonEmojis = ['🎉', '🎂', '🎓', '✈️', '🏖️', '🎄', '🎃', '🎁', '💍', '❤️', '💼', '💪', '🗓️', '🥳', '✨', '📚', '🎵', '🎮', '🏡', '🚗'];
+
+        // Confetti
+        const confettiContainer = document.getElementById('confetti-container');
+
+        /**
+         * Initializes the application.
+         * Loads events, sets up theme, renders countdowns, and attaches event listeners.
+         */
+        function initApp() {
+            loadEvents();
+            setInitialTheme();
+            initializeGoogleSignIn();
+            renderCountdowns();
+            startCountdownUpdater();
+            attachEventListeners();
+            showInitialSection();
+        }
+
+        /**
+         * Shows either the home section or the countdowns section based on existing events.
+         */
+        function showInitialSection() {
+            if (events.length === 0) {
+                homeSection.classList.remove('hidden');
+                myCountdownsSection.classList.add('hidden');
+            } else {
+                homeSection.classList.add('hidden');
+                myCountdownsSection.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Loads events from localStorage.
+         */
+        function loadEvents() {
+            try {
+                const storedEvents = localStorage.getItem('eventEaseEvents');
+                events = storedEvents ? JSON.parse(storedEvents) : [];
+                // Ensure targetDate is a valid ISO string and handle recurring events
+                events = events.map(event => {
+                    if (event.isRecurring) {
+                        let targetDate = new Date(event.targetDate);
+                        let now = new Date();
+                        // If recurring event date has passed this year, set for next year
+                        // Only update if the targetDate is actually in the past
+                        if (targetDate.getTime() <= now.getTime()) {
+                            targetDate.setFullYear(now.getFullYear() + 1);
+                        }
+                        event.targetDate = targetDate.toISOString().slice(0, 16); // Store as YYYY-MM-DDTHH:MM
+                    }
+                    return event;
+                });
+                sortEvents(); // Sort after loading and adjusting recurring dates
+            } catch (e) {
+                console.error("Failed to load events from localStorage:", e);
+                events = [];
+            }
+        }
+
+        /**
+         * Saves events to localStorage.
+         */
+        function saveEvents() {
+            localStorage.setItem('eventEaseEvents', JSON.stringify(events));
+        }
+
+        /**
+         * Sorts the events array based on the selected sort option.
+         */
+        function sortEvents() {
+            const sortBy = sortBySelect.value;
+            switch (sortBy) {
+                case 'date-asc':
+                    events.sort((a, b) => new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime());
+                    break;
+                case 'date-desc':
+                    events.sort((a, b) => new Date(b.targetDate).getTime() - new Date(a.targetDate).getTime());
+                    break;
+                case 'title-asc':
+                    events.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'title-desc':
+                    events.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+            }
+            saveEvents(); // Save sorted order
+            renderCountdowns(); // Re-render to reflect sort
+        }
+
+        /**
+         * Renders all countdown cards.
+         */
+        function renderCountdowns() {
+            countdownGrid.innerHTML = ''; // Clear existing cards
+            if (events.length === 0) {
+                noEventsMessage.classList.remove('hidden');
+                homeSection.classList.remove('hidden');
+                myCountdownsSection.classList.add('hidden');
+                return;
+            } else {
+                noEventsMessage.classList.add('hidden');
+                homeSection.classList.add('hidden');
+                myCountdownsSection.classList.remove('hidden');
+            }
+
+            events.forEach((event, index) => {
+                const card = createCountdownCard(event);
+                // Add staggered animation
+                card.style.animationDelay = `${index * 100}ms`;
+                card.classList.add('animate-fade-in-up');
+                countdownGrid.appendChild(card);
+            });
+        }
+
+        /**
+         * Creates a single countdown card element.
+         * @param {object} event - The event object.
+         * @returns {HTMLElement} The created card element.
+         */
+        function createCountdownCard(event) {
+            const card = document.createElement('div');
+            // Added min-w-[300px] to ensure cards have enough space
+            card.id = `event-card-${event.id}`;
+            card.className = 'card rounded-xl p-6 flex flex-col justify-between transform hover:scale-102 transition-transform duration-200 min-w-[300px]';
+
+            const targetDate = new Date(event.targetDate);
+            const now = new Date();
+            const isExpired = targetDate.getTime() <= now.getTime();
+
+            // Check for confetti trigger for recurring events
+            if (event.isRecurring && !isExpired) {
+                const today = new Date();
+                // Only trigger if the month and day match, and it hasn't passed for today
+                if (targetDate.getMonth() === today.getMonth() && targetDate.getDate() === today.getDate() && targetDate.getTime() > now.getTime()) {
+                    triggerConfetti();
+                }
+            }
+
+            card.innerHTML = `
+                <div class="flex items-center mb-4">
+                    <span class="text-4xl mr-3">${event.icon || '🗓️'}</span>
+                    <h3 class="text-xl font-semibold flex-grow ${isExpired ? 'line-through opacity-70' : ''}">${event.title}</h3>
+                </div>
+                <div class="countdown-display text-center my-4 ${isExpired ? 'opacity-50' : ''}">
+                                        <div class="flex justify-center items-baseline space-x-3 md:space-x-6">
+                        <div class="time-unit flex-shrink-0">
+                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="days"></p>
+                            <p class="text-xs uppercase tracking-wider opacity-80">Days</p>
+                        </div>
+                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
+                        <div class="time-unit flex-shrink-0">
+                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="hours"></p>
+                            <p class="text-xs uppercase tracking-wider opacity-80">Hours</p>
+                        </div>
+                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
+                        <div class="time-unit flex-shrink-0">
+                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="minutes"></p>
+                        </div>
+                        <span class="text-4xl md:text-5xl text-accent-color flex-shrink-0">:</span>
+                        <div class="time-unit flex-shrink-0">
+                            <p class="text-4xl md:text-5xl font-extrabold text-accent-color" data-unit="seconds"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-bar-container w-full h-2 rounded-full overflow-hidden mb-4 ${isExpired ? 'opacity-50' : ''}">
+                    <div class="progress-bar-fill h-full rounded-full" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-end space-x-2 mt-auto">
+                    ${isExpired ? `
+                        <button class="btn-secondary px-3 py-1 rounded-md text-sm delete-btn" data-id="${event.id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    ` : `
+                        <button class="btn-secondary px-3 py-1 rounded-md text-sm edit-btn" data-id="${event.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn-secondary px-3 py-1 rounded-md text-sm delete-btn" data-id="${event.id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    `}
+                </div>
+            `;
+
+            // Update countdown display immediately
+            updateCountdownDisplay(card, event.targetDate);
+
+            // Add event listeners for edit and delete buttons
+            card.querySelector('.edit-btn')?.addEventListener('click', () => openAddEditModal(event));
+            card.querySelector('.delete-btn')?.addEventListener('click', () => {
+                showMessageBox('Are you sure you want to delete this event?', 'confirm', () => deleteEvent(event.id));
+            });
+
+            return card;
+        }
+
+        /**
+         * Updates the countdown display for a single card.
+         * @param {HTMLElement} cardElement - The card element to update.
+         * @param {string} targetDateStr - The target date string (ISO format).
+         */
+        function updateCountdownDisplay(cardElement, targetDateStr) {
+            const targetDate = new Date(targetDateStr);
+            const now = new Date();
+            let diff = targetDate.getTime() - now.getTime();
+
+            const daysEl = cardElement.querySelector('[data-unit="days"]');
+            const hoursEl = cardElement.querySelector('[data-unit="hours"]');
+            const minutesEl = cardElement.querySelector('[data-unit="minutes"]');
+            const secondsEl = cardElement.querySelector('[data-unit="seconds"]');
+            const progressBarFill = cardElement.querySelector('.progress-bar-fill');
+
+            // Function to pad single digits with a leading zero
+            const pad = (num) => num < 10 ? '0' + num : num;
+
+            // Add a subtle animation class when numbers change
+            const animateChange = (element, newValue) => {
+                if (element && element.textContent !== newValue) {
+                    element.classList.add('animate-pulse-once');
+                    element.textContent = newValue;
+                    element.addEventListener('animationend', () => {
+                        element.classList.remove('animate-pulse-once');
+                    }, { once: true });
+                }
+            };
+
+            if (diff <= 0) {
+                // Event has passed
+                if (daysEl) daysEl.textContent = '00';
+                if (hoursEl) hoursEl.textContent = '00';
+                if (minutesEl) minutesEl.textContent = '00';
+                if (secondsEl) secondsEl.textContent = '00';
+
+                // Display "Event Passed!" in the main time left element if it exists (for simpler cards)
+                const timeLeftDisplay = cardElement.querySelector('[data-time-left]');
+                if (timeLeftDisplay) timeLeftDisplay.textContent = "Event Passed!";
+                const timeLabelsDisplay = cardElement.querySelector('[data-time-labels]');
+                if (timeLabelsDisplay) timeLabelsDisplay.textContent = "";
+
+                if (progressBarFill) progressBarFill.style.width = '100%';
+                cardElement.classList.add('opacity-70', 'grayscale'); // Visually dim expired events
+                cardElement.querySelectorAll('.edit-btn').forEach(btn => btn.classList.add('hidden')); // Hide edit button
+                return;
+            } else {
+                cardElement.classList.remove('opacity-70', 'grayscale');
+                cardElement.querySelectorAll('.edit-btn').forEach(btn => btn.classList.remove('hidden'));
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= days * (1000 * 60 * 60 * 24);
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= hours * (1000 * 60 * 60);
+            const minutes = Math.floor(diff / (1000 * 60));
+            diff -= minutes * (1000 * 60);
+            const seconds = Math.floor(diff / 1000);
+
+            animateChange(daysEl, pad(days));
+            animateChange(hoursEl, pad(hours));
+            animateChange(minutesEl, pad(minutes));
+            animateChange(secondsEl, pad(seconds));
+
+            // Update progress bar
+            // To calculate progress accurately, we need the event's creation time.
+            // For simplicity, let's assume events are created *now* for progress calculation
+            // or store a 'creationTime' property with each event.
+            // For now, let's just show progress based on the current year for recurring, or total time for one-off.
+            // This needs a more robust 'creationTime' property on the event object for true accuracy.
+            // For demonstration, we'll use a simplified progress that fills over the remaining time.
+            const totalRemaining = targetDate.getTime() - now.getTime();
+            const initialRemaining = events.find(e => e.id === cardElement.id.replace('event-card-', ''))?.initialRemaining || totalRemaining; // Placeholder
+            let progress = ((initialRemaining - totalRemaining) / initialRemaining) * 100;
+
+            if (progress < 0 || isNaN(progress)) progress = 0;
+            if (progress > 100) progress = 100;
+            if (progressBarFill) progressBarFill.style.width = `${progress}%`;
+        }
+
+        /**
+         * Starts the interval to update all countdowns every second.
+         */
+        function startCountdownUpdater() {
+            if (countdownInterval) clearInterval(countdownInterval); // Clear any existing interval
+            countdownInterval = setInterval(() => {
+                document.querySelectorAll('.card').forEach(cardElement => {
+                    const eventId = cardElement.id.replace('event-card-', '');
+                    const event = events.find(e => e.id === eventId);
+                    if (event) {
+                        updateCountdownDisplay(cardElement, event.targetDate);
+                    }
+                });
+            }, 1000);
+        }
+
+        /**
+         * Opens the add/edit event modal.
+         * @param {object} [event=null] - The event object to pre-fill the form for editing.
+         */
+        function openAddEditModal(event = null) {
+            openModal(addEditModal); // Use helper function for consistent modal opening
+
+            if (event) {
+                modalTitle.textContent = 'Edit Event';
+                eventTitleInput.value = event.title;
+                // Format date for datetime-local input (YYYY-MM-DDTHH:MM)
+                eventDateInput.value = event.targetDate.slice(0, 16);
+                eventIconInput.value = event.icon || '';
+                eventRecurringCheckbox.checked = event.isRecurring || false;
+                currentEditingEventId = event.id;
+            } else {
+                modalTitle.textContent = 'Add New Event';
+                eventForm.reset(); // Clear form for new event
+                // Default to tomorrow's date and time for new events
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(tomorrow.getHours() + 1); // Default to one hour from now
+                eventDateInput.value = tomorrow.toISOString().slice(0, 16);
+                currentEditingEventId = null;
+            }
+        }
+
+        /**
+         * Closes a given modal.
+         * @param {HTMLElement} modalElement - The modal element to close.
+         */
+        function closeModal(modalElement) {
+            const modalContent = modalElement.querySelector('.modal-content');
+            modalContent.classList.remove('translate-y-0', 'opacity-100');
+            modalContent.classList.add('-translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                modalElement.classList.add('hidden');
+            }, 300); // Match transition duration
+        }
+
+        /**
+         * Handles the submission of the event form (add or edit).
+         * @param {Event} e - The form submission event.
+         */
+        function handleEventFormSubmit(e) {
+            e.preventDefault();
+
+            const title = eventTitleInput.value.trim();
+            const date = eventDateInput.value;
+            const icon = eventIconInput.value.trim();
+            const isRecurring = eventRecurringCheckbox.checked;
+
+            if (!title || !date) {
+                showMessageBox('Please fill in all required fields.', 'alert');
+                return;
+            }
+
+            const newEventData = {
+                id: currentEditingEventId || Date.now().toString(), // Use existing ID or generate new
+                title: title,
+                targetDate: date,
+                icon: icon,
+                isRecurring: isRecurring,
+                // Store initial remaining time for progress bar calculation
+                initialRemaining: currentEditingEventId ? events.find(e => e.id === currentEditingEventId)?.initialRemaining : (new Date(date).getTime() - new Date().getTime())
+            };
+
+            if (currentEditingEventId) {
+                // Editing existing event
+                const index = events.findIndex(e => e.id === currentEditingEventId);
+                if (index !== -1) {
+                    events[index] = newEventData;
+                }
+            } else {
+                // Adding new event
+                events.push(newEventData);
+            }
+
+            saveEvents();
+            sortEvents(); // Re-sort after adding/editing
+            closeModal(addEditModal);
+            showMessageBox('Event saved successfully!', 'alert');
+        }
+
+        /**
+         * Deletes an event by its ID.
+         * @param {string} id - The ID of the event to delete.
+         */
+        function deleteEvent(id) {
+            events = events.filter(event => event.id !== id);
+            saveEvents();
+            renderCountdowns();
+            showMessageBox('Event deleted successfully!', 'alert');
+        }
+
+        /**
+         * Sets the initial theme based on localStorage or system preference.
+         */
+        function setInitialTheme() {
+            const savedTheme = localStorage.getItem('eventEaseTheme');
+            if (savedTheme) {
+                htmlElement.className = savedTheme;
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                htmlElement.className = 'dark';
+            } else {
+                htmlElement.className = 'light';
+            }
+            settingsThemeToggle.checked = htmlElement.classList.contains('dark');
+        }
+
+        /**
+         * Toggles between light and dark mode.
+         */
+        function toggleTheme() {
+            if (htmlElement.classList.contains('light')) {
+                htmlElement.classList.remove('light');
+                htmlElement.classList.add('dark');
+                localStorage.setItem('eventEaseTheme', 'dark');
+            } else {
+                htmlElement.classList.remove('dark');
+                htmlElement.classList.add('light');
+                localStorage.setItem('eventEaseTheme', 'light');
+            }
+            settingsThemeToggle.checked = htmlElement.classList.contains('dark');
+        }
+
+        /**
+         * Populates and displays the emoji picker modal.
+         */
+        function showEmojiPicker() {
+            emojiGrid.innerHTML = '';
+            commonEmojis.forEach(emoji => {
+                const span = document.createElement('span');
+                span.textContent = emoji;
+                span.className = 'cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors';
+                span.addEventListener('click', () => {
+                    eventIconInput.value = emoji;
+                    closeModal(emojiPickerModal);
+                });
+                emojiGrid.appendChild(span);
+            });
+            openModal(emojiPickerModal); // Use helper function for consistent modal opening
+        }
+
+        /**
+         * Clears all countdown data from localStorage.
+         */
+        function clearAllData() {
+            showMessageBox('Are you sure you want to clear ALL countdowns? This cannot be undone.', 'confirm', () => {
+                localStorage.removeItem('eventEaseEvents');
+                events = [];
+                renderCountdowns();
+                closeModal(settingsModal);
+                showMessageBox('All countdowns cleared!', 'alert');
+            });
+        }
+
+        /**
+         * Exports countdown data as a JSON file.
+         */
+        function exportData() {
+            const dataStr = JSON.stringify(events, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `eventease_countdowns_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showMessageBox('Countdowns exported successfully!', 'alert');
+        }
+
+        /**
+         * Imports countdown data from a JSON file.
+         * @param {Event} e - The file input change event.
+         */
+        function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedEvents = JSON.parse(event.target.result);
+                    if (Array.isArray(importedEvents)) {
+                        showMessageBox('Replace existing countdowns with imported data?', 'confirm', () => {
+                            events = importedEvents.map(ev => ({
+                                id: ev.id || Date.now().toString() + Math.random().toString(36).substring(2, 9), // Ensure unique ID
+                                title: ev.title,
+                                targetDate: ev.targetDate,
+                                icon: ev.icon || '',
+                                isRecurring: ev.isRecurring || false,
+                                initialRemaining: ev.initialRemaining || (new Date(ev.targetDate).getTime() - new Date().getTime()) // Preserve or set initialRemaining
+                            }));
+                            saveEvents();
+                            sortEvents();
+                            closeModal(settingsModal);
+                            showMessageBox('Countdowns imported successfully!', 'alert');
+                        });
+                    } else {
+                        showMessageBox('Invalid JSON format. Please select a valid EventEase export file.', 'alert');
+                    }
+                } catch (error) {
+                    showMessageBox('Error parsing JSON file. Please ensure it is a valid JSON.', 'alert');
+                    console.error("Error importing data:", error);
+                } finally {
+                    e.target.value = ''; // Clear the file input
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /**
+         * Displays a custom message box.
+         * @param {string} message - The message to display.
+         * @param {'alert'|'confirm'} type - Type of message box (alert or confirmation).
+         * @param {function} [onConfirm] - Callback function for 'confirm' type when OK is clicked.
+         */
+        function showMessageBox(message, type = 'alert', onConfirm = null) {
+            const messageBoxText = document.getElementById('message-box-text');
+            const messageBoxOkBtn = document.getElementById('message-box-ok');
+            const messageBoxCancelBtn = document.getElementById('message-box-cancel');
+
+            messageBoxText.textContent = message;
+
+            messageBoxOkBtn.onclick = () => {
+                closeModal(messageBoxModal);
+                if (type === 'confirm' && onConfirm) {
+                    onConfirm();
+                }
+            };
+
+            if (type === 'confirm') {
+                messageBoxCancelBtn.classList.remove('hidden');
+                messageBoxCancelBtn.onclick = () => closeModal(messageBoxModal);
+            } else {
+                messageBoxCancelBtn.classList.add('hidden');
+            }
+
+            openModal(messageBoxModal); // Use helper function for consistent modal opening
+        }
+
+        /**
+         * Triggers a simple confetti animation.
+         */
+        function triggerConfetti() {
+            confettiContainer.classList.remove('hidden');
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            for (let i = 0; i < 50; i++) { // Generate 50 confetti pieces
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+                confetti.style.animationDuration = `${2 + Math.random() * 2}s`; // 2 to 4 seconds
+                confetti.style.transform = `translateY(${Math.random() * -100}px) rotate(${Math.random() * 360}deg)`; // Start slightly above
+                confettiContainer.appendChild(confetti);
+
+                // Remove confetti after animation to prevent DOM bloat
+                confetti.addEventListener('animationend', () => confetti.remove());
+            }
+            // Hide container after a short while if no new confetti is generated
+            setTimeout(() => {
+                if (confettiContainer.children.length === 0) {
+                    confettiContainer.classList.add('hidden');
+                }
+            }, 4000);
+        }
+
+        /**
+         * Initializes Google Sign-In button.
+         */
+        function initializeGoogleSignIn() {
+            // IMPORTANT: Replace with your actual Google Client ID
+            const GOOGLE_CLIENT_ID = "1039311902277-tvpr8aubdmi2o4hbqgmff7ohnccgisqa.apps.googleusercontent.com";
+
+            if (GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
+                console.warn("Google Client ID is not set. Please replace 'YOUR_GOOGLE_CLIENT_ID' in the script.");
+                const signInBtnContainer = document.getElementById('google-signin-btn');
+                if(signInBtnContainer) {
+                    signInBtnContainer.innerHTML = '<p class="text-xs text-red-500">Google Client ID not configured.</p>';
+                }
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                googleSignInBtn,
+                { theme: "outline", size: "large", type: 'icon', shape: 'circle' } // Customize button
+            );
+            // google.accounts.id.prompt(); // Optional: show One Tap prompt
+        }
+
+        /**
+         * Handles the response from Google Sign-In.
+         * @param {object} response - The credential response object from Google.
+         */
+        function handleCredentialResponse(response) {
+            // Decode the JWT token to get user profile information
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+
+            // Update UI with user info
+            userAvatarImg.src = payload.picture;
+            userAvatarImg.alt = `${payload.name}'s avatar`;
+            userProfileDiv.classList.remove('hidden');
+            userProfileDiv.classList.add('flex');
+            googleSignInBtn.style.display = 'none';
+
+            showMessageBox(`Welcome, ${payload.given_name}!`, 'alert');
+            // Here you could potentially namespace localStorage or fetch data from a backend
+        }
+
+        /**
+         * Handles user sign-out.
+         */
+        function handleSignOut() {
+            // This is a simplified sign-out. For a full sign-out, you might need to
+            // call google.accounts.id.disableAutoSelect() or manage server-side sessions.
+            userProfileDiv.classList.add('hidden');
+            userProfileDiv.classList.remove('flex');
+            googleSignInBtn.style.display = 'block';
+
+            // It's good practice to re-initialize or at least re-render the button
+            // in case the user wants to sign in again.
+            // Note: The google object might not be available if the script failed to load.
+            if (window.google && google.accounts && google.accounts.id) {
+                 google.accounts.id.renderButton(
+                    googleSignInBtn,
+                    { theme: "outline", size: "large", type: 'icon', shape: 'circle' }
+                );
+            }
+
+            showMessageBox('You have been signed out.', 'alert');
+        }
+
+        /**
+         * Attaches all global event listeners.
+         */
+        function attachEventListeners() {
+            // Header buttons
+            themeToggleBtn.addEventListener('click', toggleTheme);
+            settingsBtn.addEventListener('click', () => openModal(settingsModal));
+            signOutBtn.addEventListener('click', handleSignOut);
+
+            // Initial CTA button
+            createFirstCountdownBtn.addEventListener('click', () => openAddEditModal());
+
+            // FAB
+            addEventFab.addEventListener('click', () => openAddEditModal());
+
+            // Add/Edit Modal buttons
+            cancelAddEditBtn.addEventListener('click', () => closeModal(addEditModal));
+            eventForm.addEventListener('submit', handleEventFormSubmit);
+            openEmojiPickerBtn.addEventListener('click', showEmojiPicker);
+
+            // Settings Modal buttons
+            closeSettingsBtn.addEventListener('click', () => closeModal(settingsModal));
+            settingsThemeToggle.addEventListener('change', toggleTheme);
+            exportDataBtn.addEventListener('click', exportData);
+            importFileInput.addEventListener('change', importData);
+            clearAllDataBtn.addEventListener('click', clearAllData);
+            sortBySelect.addEventListener('change', sortEvents);
+
+            // Emoji Picker Modal buttons
+            closeEmojiPickerModalBtn.addEventListener('click', () => closeModal(emojiPickerModal));
+
+            // Close modals when clicking outside (on overlay)
+            addEditModal.addEventListener('click', (e) => { if (e.target === addEditModal) closeModal(addEditModal); });
+            settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) closeModal(settingsModal); });
+            emojiPickerModal.addEventListener('click', (e) => { if (e.target === emojiPickerModal) closeModal(emojiPickerModal); });
+            messageBoxModal.addEventListener('click', (e) => { if (e.target === messageBoxModal) closeModal(messageBoxModal); });
+        }
+
+        /**
+         * Helper to open any modal with transition.
+         * @param {HTMLElement} modalElement - The modal element to open.
+         */
+        function openModal(modalElement) {
+            modalElement.classList.remove('hidden');
+            const modalContent = modalElement.querySelector('.modal-content');
+            setTimeout(() => {
+                modalContent.classList.remove('-translate-y-10', 'opacity-0');
+                modalContent.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+
+        // Initialize the app when the window is fully loaded to ensure Google script is ready
+        window.onload = initApp;
+    </script>
 </body>
 </html>
