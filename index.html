@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -130,6 +132,30 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        /* New Animations */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out forwards;
+        }
+
+        @keyframes subtle-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        .animate-subtle-pulse {
+            animation: subtle-pulse 2.5s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -146,6 +172,15 @@
                 <button id="settings-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
                     <i class="fas fa-cog text-xl"></i>
                 </button>
+                <!-- Google Sign-In Button -->
+                <div id="google-signin-btn" class="ml-4"></div>
+                <!-- User Profile Display -->
+                <div id="user-profile" class="hidden items-center space-x-3 ml-4">
+                    <img id="user-avatar" class="w-8 h-8 rounded-full" alt="User Avatar">
+                    <button id="signout-btn" class="p-2 rounded-full hover:bg-white hover:bg-opacity-20 transition-colors">
+                        <i class="fas fa-sign-out-alt text-xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
@@ -160,7 +195,7 @@
             <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-80">
                 EventEase helps you create, track, and celebrate every important milestone. From birthdays to big projects, keep every moment in sight.
             </p>
-            <button id="create-first-countdown-btn" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:scale-105 transition-transform duration-300">
+            <button id="create-first-countdown-btn" class="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:scale-105 transition-transform duration-300 animate-subtle-pulse">
                 Create Your First Countdown <i class="fas fa-plus ml-2"></i>
             </button>
         </section>
@@ -197,7 +232,7 @@
 
     <!-- Add/Edit Event Modal -->
     <div id="add-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 scale-95 opacity-0">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
             <h3 id="modal-title" class="text-2xl font-bold mb-6 text-center">Add New Event</h3>
             <form id="event-form" class="space-y-4">
                 <div>
@@ -234,7 +269,7 @@
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 scale-95 opacity-0">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
             <h3 class="text-2xl font-bold mb-6 text-center">Settings</h3>
             <div class="space-y-4">
                 <div class="flex justify-between items-center py-2 border-b border-border-color">
@@ -268,7 +303,7 @@
 
     <!-- Emoji Picker Modal -->
     <div id="emoji-picker-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 scale-95 opacity-0">
+        <div class="modal-content rounded-xl p-6 w-full max-w-md transform transition-all duration-300 -translate-y-10 opacity-0">
             <h3 class="text-2xl font-bold mb-4 text-center">Pick an Emoji</h3>
             <div id="emoji-grid" class="grid grid-cols-6 gap-2 text-3xl text-center max-h-64 overflow-y-auto p-2 rounded-lg border border-border-color">
                 <!-- Emojis will be injected here -->
@@ -281,7 +316,7 @@
 
     <!-- Custom Message Box Modal -->
     <div id="message-box-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="modal-content rounded-xl p-6 w-full max-w-sm text-center transform transition-all duration-300 scale-95 opacity-0">
+        <div class="modal-content rounded-xl p-6 w-full max-w-sm text-center transform transition-all duration-300 -translate-y-10 opacity-0">
             <p id="message-box-text" class="text-lg mb-6"></p>
             <div class="flex justify-center space-x-4">
                 <button id="message-box-cancel" class="btn-secondary px-5 py-2 rounded-lg font-medium hover:opacity-80 transition-opacity hidden">Cancel</button>
@@ -334,6 +369,10 @@
         const clearAllDataBtn = document.getElementById('clear-all-data-btn');
         const settingsThemeToggle = document.getElementById('settings-theme-toggle');
         const sortBySelect = document.getElementById('sort-by');
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const userProfileDiv = document.getElementById('user-profile');
+        const userAvatarImg = document.getElementById('user-avatar');
+        const signOutBtn = document.getElementById('signout-btn');
 
         // Emoji Grid
         const emojiGrid = document.getElementById('emoji-grid');
@@ -349,6 +388,7 @@
         function initApp() {
             loadEvents();
             setInitialTheme();
+            initializeGoogleSignIn();
             renderCountdowns();
             startCountdownUpdater();
             attachEventListeners();
@@ -442,8 +482,11 @@
                 myCountdownsSection.classList.remove('hidden');
             }
 
-            events.forEach(event => {
+            events.forEach((event, index) => {
                 const card = createCountdownCard(event);
+                // Add staggered animation
+                card.style.animationDelay = `${index * 100}ms`;
+                card.classList.add('animate-fade-in-up');
                 countdownGrid.appendChild(card);
             });
         }
@@ -661,8 +704,9 @@
          * @param {HTMLElement} modalElement - The modal element to close.
          */
         function closeModal(modalElement) {
-            modalElement.querySelector('.modal-content').classList.remove('scale-100', 'opacity-100');
-            modalElement.querySelector('.modal-content').classList.add('scale-95', 'opacity-0');
+            const modalContent = modalElement.querySelector('.modal-content');
+            modalContent.classList.remove('translate-y-0', 'opacity-100');
+            modalContent.classList.add('-translate-y-10', 'opacity-0');
             setTimeout(() => {
                 modalElement.classList.add('hidden');
             }, 300); // Match transition duration
@@ -900,12 +944,84 @@
         }
 
         /**
+         * Initializes Google Sign-In button.
+         */
+        function initializeGoogleSignIn() {
+            // IMPORTANT: Replace with your actual Google Client ID
+            const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
+
+            if (GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
+                console.warn("Google Client ID is not set. Please replace 'YOUR_GOOGLE_CLIENT_ID' in the script.");
+                const signInBtnContainer = document.getElementById('google-signin-btn');
+                if(signInBtnContainer) {
+                    signInBtnContainer.innerHTML = '<p class="text-xs text-red-500">Google Client ID not configured.</p>';
+                }
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                googleSignInBtn,
+                { theme: "outline", size: "large", type: 'icon', shape: 'circle' } // Customize button
+            );
+            // google.accounts.id.prompt(); // Optional: show One Tap prompt
+        }
+
+        /**
+         * Handles the response from Google Sign-In.
+         * @param {object} response - The credential response object from Google.
+         */
+        function handleCredentialResponse(response) {
+            // Decode the JWT token to get user profile information
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+
+            // Update UI with user info
+            userAvatarImg.src = payload.picture;
+            userAvatarImg.alt = `${payload.name}'s avatar`;
+            userProfileDiv.classList.remove('hidden');
+            userProfileDiv.classList.add('flex');
+            googleSignInBtn.style.display = 'none';
+
+            showMessageBox(`Welcome, ${payload.given_name}!`, 'alert');
+            // Here you could potentially namespace localStorage or fetch data from a backend
+        }
+
+        /**
+         * Handles user sign-out.
+         */
+        function handleSignOut() {
+            // This is a simplified sign-out. For a full sign-out, you might need to
+            // call google.accounts.id.disableAutoSelect() or manage server-side sessions.
+            userProfileDiv.classList.add('hidden');
+            userProfileDiv.classList.remove('flex');
+            googleSignInBtn.style.display = 'block';
+
+            // It's good practice to re-initialize or at least re-render the button
+            // in case the user wants to sign in again.
+            // Note: The google object might not be available if the script failed to load.
+            if (window.google && google.accounts && google.accounts.id) {
+                 google.accounts.id.renderButton(
+                    googleSignInBtn,
+                    { theme: "outline", size: "large", type: 'icon', shape: 'circle' }
+                );
+            }
+
+            showMessageBox('You have been signed out.', 'alert');
+        }
+
+        /**
          * Attaches all global event listeners.
          */
         function attachEventListeners() {
             // Header buttons
             themeToggleBtn.addEventListener('click', toggleTheme);
             settingsBtn.addEventListener('click', () => openModal(settingsModal));
+            signOutBtn.addEventListener('click', handleSignOut);
 
             // Initial CTA button
             createFirstCountdownBtn.addEventListener('click', () => openAddEditModal());
@@ -942,14 +1058,15 @@
          */
         function openModal(modalElement) {
             modalElement.classList.remove('hidden');
+            const modalContent = modalElement.querySelector('.modal-content');
             setTimeout(() => {
-                modalElement.querySelector('.modal-content').classList.remove('scale-95', 'opacity-0');
-                modalElement.querySelector('.modal-content').classList.add('scale-100', 'opacity-100');
+                modalContent.classList.remove('-translate-y-10', 'opacity-0');
+                modalContent.classList.add('translate-y-0', 'opacity-100');
             }, 10);
         }
 
-        // Initialize the app when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', initApp);
+        // Initialize the app when the window is fully loaded to ensure Google script is ready
+        window.onload = initApp;
     </script>
 </body>
 </html>
